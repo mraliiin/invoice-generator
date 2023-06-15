@@ -1,0 +1,9 @@
+{
+  "name": "invoice",
+  "version": "1.0.0",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "bootstrap-sass": "^3.3.7"
+  },
+  "appPath": "app"
+}

@@ -1,0 +1,49 @@
+<div class="row infos">
+	<div class="col-xs-6 pull-left">
+		<div class="input-container" data-ng-hide='printMode'>
+			<select ng-model='invoice.customer_info' ng-options='client as client.name for client in availableClients'>
+			</select>
+		</div>
+	</div>
+
+	<div class="col-xs-6">
+		<div class="input-container pull-right" data-ng-hide='printMode'>
+			<select ng-model='invoice.company_info' ng-options='c as c.name for c in availableCompanies'>
+			</select>
+		</div>
+	</div>
+
+	<!-- Client info-->
+	<div class="col-xs-6">
+		<div ng-show="invoice.customer_info">
+			<div class="input-container">
+				<input type="text" ng-model="invoice.customer_info.name" />
+			</div>
+			<div class="input-container">
+				<input type="text" ng-model="invoice.customer_info.address1" />
+			</div>
+			<div class="input-container">
+				<input type="text" ng-model="invoice.customer_info.address2" />
+			</div>
+			<div class="input-container">
+				<input type="text" ng-model="invoice.customer_info.postal" />
+			</div>
+		</div>
+	</div>
+
+	<!--Company info-->
+	<div class="col-xs-6 right" ng-show="invoice.company_info">
+		<div class="input-container">
+			<input type="text" ng-model="invoice.company_info.name" />
+		</div>
+		<div class="input-container">
+			<input type="text" ng-model="invoice.company_info.address1" />
+		</div>
+		<div class="input-container">
+			<input type="text" ng-model="invoice.company_info.address2" />
+		</div>
+		<div class="input-container">
+			<input type="text" ng-model="invoice.company_info.postal" />
+		</div>
+	</div>
+</div>

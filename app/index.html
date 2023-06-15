@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title ng-hide="printMode">Invoice Generator</title>
+
+    <!--CSS-->
+    <link href="/assets/images/icons/favicon.ico" rel="icon">
+    <link href="/css/main.css" rel="stylesheet">
+</head>
+
+<body ng-app="InvoiceGenerator" ng-controller="InvoiceController">
+    <div class="container" width="800px" id="invoice">
+        <div class="row">
+            <div class="col-xs-12 heading">
+                INVOICE
+            </div>
+        </div>
+
+        <!--Clients-->
+        <div ng-include="'templates/clients-list.html'"></div>
+
+        <div class="row">
+            <div class="col-xs-6 pull-left">
+                <div class="input-container" data-ng-hide="printMode">
+                    <select ng-model="currencySymbol" ng-options="currency.symbol as currency.name for currency in availableCurrencies"></select>
+                </div>
+            </div>
+
+            <div class="col-xs-6 pull-right">
+                <div class="invoice-number-container pull-right">
+                    <label for="invoice-number">Invoice #</label>
+                    <input type="text" id="invoice-number" ng-model="invoice.invoice_number" class="text-right" />
+                </div>
+
+                <div class="invoice-number-container pull-right">
+                    <label for="invoice-number">Invoice Date</label>
+                    <input type="text" id="invoice-date" ng-model="invoice.invoice_date" class="text-right" />
+                </div>
+            </div>
+        </div>
+
+        <div class="items-table">
+            <div class="row header">
+                <div class="col-xs-4">Item</div>
+                <div class="col-xs-3">Description</div>
+                <div class="col-xs-1">Quantity</div>
+                <div class="col-xs-2 text-center">Cost({{currencySymbol}})</div>
+                <div class="col-xs-2 text-right">Total</div>
+            </div>
+            <div class="row invoice-item" ng-repeat="item in invoice.items" ng-animate="'slide-down'">
+                <div class="col-xs-4 input-container">
+                    <input ng-model="item.title" placeholder="title" />
+                </div>
+
+                <div class="col-xs-3 input-container">
+                    <textarea ng-model="item.description" placeholder="Description" class="invoice-description"></textarea>
+                </div>
+
+                <div class="col-xs-1 input-container text-center">
+                    <input ng-model="item.qty" value="1" size="4" ng-required ng-validate="integer" placeholder="Quantity" class="text-center" />
+                </div>
+                <div class="col-xs-2 input-container text-center">
+                    <input ng-model="item.cost" value="0.00" ng-required ng-validate="number" size="6" placeholder="Cost" class="text-center" />
+                </div>
+                <div class="col-xs-2 text-right input-container">
+                    {{item.cost * item.qty | currency: currencySymbol}}
+                </div>
+
+                <div class="remove-item-container pull-right">
+                    <a href ng-hide="printMode" ng-click="removeItem(item)" class="glyphicon glyphicon-remove text-danger"></a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-10 text-right">Total:</div>
+                <div class="col-xs-2 text-right">{{calculateGrandTotal() | currency: currencySymbol}}</div>
+            </div>
+        </div>
+
+        <div class="row noPrint actions">
+            <a href="#" class="btn btn-danger" ng-hide="printMode" ng-click="addItem()()">New item</a>
+            <a href="#" class="btn btn-primary" ng-click="clearLocalStorage()">Reset</a>
+            <a href="#" class="btn btn-primary" ng-hide="printMode" ng-click="printMode = true;">Turn On Print Mode</a>
+            <a href="#" class="btn btn-primary" ng-show="printMode" ng-click="printMode = false;">Turn Off Print Mode</a>
+        </div>
+
+        <div ng-include="'templates/footer.html'"></div>
+    </div>
+
+    <!--JS-->
+    <script src="lib/vendor.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</body>
+</html>
